@@ -4,10 +4,12 @@ import time
 import random
 
 tk = Tk()
+
+
 app_running = True
 
-size_canvas_x = 768
-size_canvas_y = 768
+size_canvas_x = 761
+size_canvas_y = 761
 
 
 def on_closing():
@@ -30,7 +32,7 @@ canvas.pack()
 tk.update()
 
 # Field characteristics
-s_x = 3  # number of cells
+s_x = 10  # number of cells
 s_y = s_x
 step_x = size_canvas_x // s_x
 step_y = size_canvas_y // s_y
@@ -48,6 +50,8 @@ def draw_table():
 points = [[-1 for i in range(s_x)] for i in range(s_x)]
 print(points)
 list_ids = []
+draw_table()
+type = 0
 
 
 class Point:
@@ -96,7 +100,7 @@ def draw_point(x, y, type):
 
 def add_to_points(event):
     """This function add tic or tac"""
-    # print(event.num, event.x, event.y)
+    print(event.num, event.x, event.y)
     global points
     type = 0
     if event.num == 3:
@@ -107,7 +111,7 @@ def add_to_points(event):
         if check_winner(type):
             print("winner", type)
             points = [[10 for i in range(s_x)] for i in range(s_x)]
-        # print(" ".join(map(str, points)))
+        print(" ".join(map(str, points)))
 
 
 def button_press():
@@ -122,8 +126,25 @@ def button_press():
     points = [[-1 for i in range(s_x)] for i in range(s_x)]
 
 
-b1 = Button(tk, text="New game!", command=button_press)
-b1.pack()
+def button_tic():
+    """Play as Tic"""
+    global marker
+    button_press()
+
+
+def button_tok():
+    """Play as Tak"""
+    button_press()
+
+
+f_bot = Frame(tk)
+b_tic = Button(f_bot, bg='yellow', text="Play as Tic", command=button_tic)
+b_tok = Button(f_bot, bg='yellow', text="Play as Tak", command=button_tok)
+b1 = Button(f_bot, bg='green', text="New game!", command=button_press)
+f_bot.pack()
+b_tic.pack(side=LEFT, padx=10)
+b1.pack(side=LEFT)
+b_tok.pack(side=LEFT, padx=10)
 
 
 def check_winner(who):
@@ -151,14 +172,20 @@ def check_winner(who):
         return True
 
 
-draw_table()
-
+# marker = 0
+# if marker == 1:
+#     bot = "<Button-1>"
+# else:
+#     bot = "<Button-3>"
+#
 while app_running:
 
     canvas.bind_all("<Button-1>", add_to_points)  # ЛКМ
-    canvas.bind_all("<Button-3>", add_to_points)  # ПКМ
+    # canvas.bind_all("<Button-3>", add_to_points)  # ПКМ
 
     if app_running:
         tk.update_idletasks()
         tk.update()
     time.sleep(0.005)
+
+
