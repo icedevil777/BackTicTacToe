@@ -99,7 +99,6 @@ def step_player(event):
         draw_point(event.x // step, event.y // step, type)
         if check_winner(type, s_xy, points):
             print("Computer is winner!")
-            print("Computer is winner!")
             messagebox.showinfo("Game over", "Computer is winner!")
             # print(points)
             points = [[10 for i in range(s_xy)] for i in range(s_xy)]
