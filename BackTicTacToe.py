@@ -10,7 +10,7 @@ tk.title("BackTicTacToe")
 tk.resizable(0, 0)
 tk.wm_attributes("-topmost", 1)
 # Game and field parameters
-size_canvas = 761
+size_canvas = 661
 s_xy = 10  # Number of cells
 save = 0
 step = size_canvas // s_xy
@@ -326,7 +326,7 @@ draw_table()
 # Real time
 while app_running:
     if turn == 1:
-        canvas.bind_all("<Button-1>", step_player)  # ЛКМ
+        canvas.bind("<Button-1>", step_player)  # ЛКМ
     elif turn == 0:
         step_ai()
 
