@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 import time
 import random
+from check_winner import *
 
 # Tkinter parameters
 tk = Tk()
@@ -92,7 +93,7 @@ def step_player(event):
             points[event.x // step][event.y // step] == -2:
         points[event.x // step][event.y // step] = type
         draw_point(event.x // step, event.y // step, type)
-        if check_winner(type):
+        if check_winner(type, s_xy, points):
             print("Computer is winner!")
             # print(points)
             points = [[10 for i in range(s_xy)] for i in range(s_xy)]
@@ -109,14 +110,14 @@ def step_ai():
         rand = random.randint(0, 99)
         if points[AI_table[rand][0] // step][AI_table[rand][1] // step] == -1:
             points[AI_table[rand][0] // step][AI_table[rand][1] // step] = type
-            if check_winner(type) == 0:
+            if check_winner(type, s_xy, points) == 0:
                 draw_point(AI_table[rand][0] // step,
                            AI_table[rand][1] // step, type)
                 turn = 1
                 type = (int(not type))
                 # print(f"turn {turn}")
                 # print(f"type {type}")
-            if check_winner(type) == 1:
+            if check_winner(type, s_xy, points) == 1:
                 points[AI_table[rand][0] \
                        // step][AI_table[rand][1] // step] = -2
                 if save < 3:
@@ -156,169 +157,6 @@ def draw_point(x, y, type):
                                       y * step + step, fill=color)
         list_ids.append(id)
         list_ids.append(id2)
-
-
-def check_winner(who):
-    """The function determines who is winner"""
-    win = False
-    # Horizontal check
-    for i in range(0, s_xy):
-        for j in range(0, s_xy // 2 + 1):
-            if points[i][j] == who and \
-                    points[i][j + 1] == who and \
-                    points[i][j + 2] == who and \
-                    points[i][j + 3] == who and \
-                    points[i][j + 4] == who:
-                win = True
-    # Vertical check
-    for i in range(0, s_xy // 2 + 1):
-        for j in range(0, s_xy):
-            if points[i][j] == who and \
-                    points[i + 1][j] == who and \
-                    points[i + 2][j] == who and \
-                    points[i + 3][j] == who and \
-                    points[i + 4][j] == who:
-                win = True
-    # All diagonals check
-    for i in range(6):
-        if points[i][i] == who and \
-                points[i + 1][i + 1] == who and \
-                points[i + 2][i + 2] == who and \
-                points[i + 3][i + 3] == who and \
-                points[i + 4][i + 4] == who:
-            win = True
-        if points[-1 - i][i + 0] == who and \
-                points[-2 - i][i + 1] == who and \
-                points[-3 - i][i + 2] == who and \
-                points[-4 - i][i + 3] == who and \
-                points[-5 - i][i + 4] == who:
-            win = True
-        if i < 5:
-            if points[i + 1][i] == who and \
-                    points[i + 2][i + 1] == who and \
-                    points[i + 3][i + 2] == who and \
-                    points[i + 4][i + 3] == who and \
-                    points[i + 5][i + 4] == who:
-                win = True
-            if points[i][i + 1] == who and \
-                    points[i + 1][i + 2] == who and \
-                    points[i + 2][i + 3] == who and \
-                    points[i + 3][i + 4] == who and \
-                    points[i + 4][i + 5] == who:
-                win = True
-            if points[i][-2 - i] == who and \
-                    points[i + 1][-3 - i] == who and \
-                    points[i + 2][-4 - i] == who and \
-                    points[i + 3][-5 - i] == who and \
-                    points[i + 4][-6 - i] == who:
-                win = True
-            if points[i + 1][-1 - i] == who and \
-                    points[i + 2][-2 - i] == who and \
-                    points[i + 3][-3 - i] == who and \
-                    points[i + 4][-4 - i] == who and \
-                    points[i + 5][-5 - i] == who:
-                win = True
-        if i < 4:
-            if points[i + 2][i] == who and \
-                    points[i + 3][i + 1] == who and \
-                    points[i + 4][i + 2] == who and \
-                    points[i + 5][i + 3] == who and \
-                    points[i + 6][i + 4] == who:
-                win = True
-            if points[i][i + 2] == who and \
-                    points[i + 1][i + 3] == who and \
-                    points[i + 2][i + 4] == who and \
-                    points[i + 3][i + 5] == who and \
-                    points[i + 4][i + 6] == who:
-                win = True
-            if points[i][-3 - i] == who and \
-                    points[i + 1][-4 - i] == who and \
-                    points[i + 2][-5 - i] == who and \
-                    points[i + 3][-6 - i] == who and \
-                    points[i + 4][-7 - i] == who:
-                win = True
-            if points[i + 2][-1 - i] == who and \
-                    points[i + 3][-2 - i] == who and \
-                    points[i + 4][-3 - i] == who and \
-                    points[i + 5][-4 - i] == who and \
-                    points[i + 6][-5 - i] == who:
-                win = True
-        if i < 3:
-            if points[i + 3][i] == who and \
-                    points[i + 4][i + 1] == who and \
-                    points[i + 5][i + 2] == who and \
-                    points[i + 6][i + 3] == who and \
-                    points[i + 7][i + 4] == who:
-                win = True
-            if points[i][i + 3] == who and \
-                    points[i + 1][i + 4] == who and \
-                    points[i + 2][i + 5] == who and \
-                    points[i + 3][i + 6] == who and \
-                    points[i + 4][i + 7] == who:
-                win = True
-            if points[i][-4 - i] == who and \
-                    points[i + 1][-5 - i] == who and \
-                    points[i + 2][-6 - i] == who and \
-                    points[i + 3][-7 - i] == who and \
-                    points[i + 4][-8 - i] == who:
-                win = True
-            if points[i + 3][-1 - i] == who and \
-                    points[i + 4][-2 - i] == who and \
-                    points[i + 5][-3 - i] == who and \
-                    points[i + 6][-4 - i] == who and \
-                    points[i + 7][-5 - i] == who:
-                win = True
-        if i < 2:
-            if points[i + 4][i] == who and \
-                    points[i + 5][i + 1] == who and \
-                    points[i + 6][i + 2] == who and \
-                    points[i + 7][i + 3] == who and \
-                    points[i + 8][i + 4] == who:
-                win = True
-            if points[i][i + 4] == who and \
-                    points[i + 1][i + 5] == who and \
-                    points[i + 2][i + 6] == who and \
-                    points[i + 3][i + 7] == who and \
-                    points[i + 4][i + 8] == who:
-                win = True
-            if points[i][-5 - i] == who and \
-                    points[i + 1][-6 - i] == who and \
-                    points[i + 2][-7 - i] == who and \
-                    points[i + 3][-8 - i] == who and \
-                    points[i + 4][-9 - i] == who:
-                win = True
-            if points[i + 4][-1 - i] == who and \
-                    points[i + 5][-2 - i] == who and \
-                    points[i + 6][-3 - i] == who and \
-                    points[i + 7][-4 - i] == who and \
-                    points[i + 8][-5 - i] == who:
-                win = True
-        if i < 1:
-            if points[i + 5][i] == who and \
-                    points[i + 6][i + 1] == who and \
-                    points[i + 7][i + 2] == who and \
-                    points[i + 8][i + 3] == who and \
-                    points[i + 9][i + 4] == who:
-                win = True
-            if points[i][i + 5] == who and \
-                    points[i + 1][i + 6] == who and \
-                    points[i + 2][i + 7] == who and \
-                    points[i + 3][i + 8] == who and \
-                    points[i + 4][i + 9] == who:
-                win = True
-            if points[i][-6 - i] == who and \
-                    points[i + 1][-7 - i] == who and \
-                    points[i + 2][-8 - i] == who and \
-                    points[i + 3][-9 - i] == who and \
-                    points[i + 4][-10 - i] == who:
-                win = True
-            if points[i + 5][-1 - i] == who and \
-                    points[i + 6][-2 - i] == who and \
-                    points[i + 7][-3 - i] == who and \
-                    points[i + 8][-4 - i] == who and \
-                    points[i + 9][-5 - i] == who:
-                win = True
-    return win
 
 
 draw_table()
