@@ -2,30 +2,13 @@ from tkinter import *
 from tkinter import messagebox
 import time
 import random
-
+from functions import *
 # Tkinter parameters
 tk = Tk()
 app_running = True
 tk.title("BackTicTacToe")
 tk.resizable(0, 0)
 tk.wm_attributes("-topmost", 1)
-# Game and field parameters
-size_canvas = 661
-s_xy = 10  # Number of cells
-save = 0
-step = size_canvas // s_xy
-points = [[-1 for i in range(s_xy)] for i in range(s_xy)]
-list_ids = []
-type = 0  # Tic or Tac
-turn = 1  # Player or computer
-AI_table = []  # AI step table
-for y in range(s_xy):
-    for x in range(s_xy):
-        AI_table.append([step * x + step // 2, step * y + step // 2])
-canvas = Canvas(tk, width=size_canvas, height=size_canvas, bd=0,
-                highlightthickness=0)
-canvas.create_rectangle(0, 0, size_canvas, size_canvas, fill="white")
-canvas.pack()
 
 
 def on_closing():
@@ -38,13 +21,19 @@ def on_closing():
 
 tk.protocol("WM_DELETE_WINDOW", on_closing)
 
+# Game and field parameters
+size_canvas = 661
+s_xy = 10  # Number of cells
+step = size_canvas // s_xy
 
-def draw_table():
-    """This function draw all lines"""
-    for i in range(0, s_xy + 1):
-        canvas.create_line(0, i * step, size_canvas, i * step)
-    for i in range(0, s_xy + 1):
-        canvas.create_line(i * step, 0, i * step, size_canvas)
+points = [[-1 for i in range(s_xy)] for i in range(s_xy)]
+list_ids = []
+type = 0  # Tic or Tac
+turn = 1  # Player or computer
+canvas = Canvas(tk, width=size_canvas, height=size_canvas, bd=0,
+                highlightthickness=0)
+canvas.create_rectangle(0, 0, size_canvas, size_canvas, fill="white")
+canvas.pack()
 
 
 def button_press():
@@ -71,6 +60,9 @@ def button_tak():
     type = 1
 
 
+draw_table(s_xy, step, size_canvas, canvas)
+
+
 # Buttons
 f_bot = Frame(tk)
 b_tic = Button(f_bot, bg='yellow', text="Play as Tic", command=button_tic)
@@ -94,10 +86,13 @@ def step_player(event):
         draw_point(event.x // step, event.y // step, type)
         if check_winner(type):
             print("Computer is winner!")
-            # print(points)
+            print(points)
             points = [[10 for i in range(s_xy)] for i in range(s_xy)]
         turn = 0
         type = (int(not type))
+
+
+save = 0
 
 
 def step_ai():
@@ -105,27 +100,30 @@ def step_ai():
     global type
     global turn
     global save
+    t = []  # AI step table
+    for y in range(s_xy):
+        for x in range(s_xy):
+            t.append([step * x + step // 2, step * y + step // 2])
+
     if turn == 0:
         rand = random.randint(0, 99)
-        if points[AI_table[rand][0] // step][AI_table[rand][1] // step] == -1:
-            points[AI_table[rand][0] // step][AI_table[rand][1] // step] = type
+        if points[t[rand][0] // step][t[rand][1] // step] == -1:
+            points[t[rand][0] // step][t[rand][1] // step] = type
             if check_winner(type) == 0:
-                draw_point(AI_table[rand][0] // step,
-                           AI_table[rand][1] // step, type)
+                draw_point(t[rand][0] // step, t[rand][1] // step, type)
                 turn = 1
                 type = (int(not type))
                 # print(f"turn {turn}")
-                # print(f"type {type}")
+                print(f"type {type}")
             if check_winner(type) == 1:
-                points[AI_table[rand][0] \
-                       // step][AI_table[rand][1] // step] = -2
-                if save < 3:
+                points[t[rand][0] // step][t[rand][1] // step] = -2
+                if save < 5:
                     save = save + 1
-                    # print(f"save {save}")
+                    print(f"save {save}")
                 else:
                     print("Player is winner!")
-                    draw_point(AI_table[rand][0] // step,
-                               AI_table[rand][1] // step, type)
+                    draw_point(t[rand][0] // step,
+                               t[rand][1] // step, type)
                     save = 0
                     points = [[10 for i in range(s_xy)] for i in range(s_xy)]
 
@@ -320,8 +318,6 @@ def check_winner(who):
                 win = True
     return win
 
-
-draw_table()
 
 # Real time
 while app_running:
