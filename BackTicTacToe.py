@@ -101,8 +101,10 @@ def step_player(event):
             print("Computer is winner!")
             print("Computer is winner!")
             messagebox.showinfo("Game over", "Computer is winner!")
+
             # print(points)
             points = [[10 for i in range(s_xy)] for i in range(s_xy)]
+            button_press()
         turn = 0
         type = (int(not type))
 
@@ -131,12 +133,14 @@ def step_ai():
                     # print(f"save {save}")
                 else:
                     print("Player is winner!")
+
                     messagebox.showinfo("Game over",
                                         "Player is winner!")
                     draw_point(AI_table[rand][0] // step,
                                AI_table[rand][1] // step, type)
                     save = 0
                     points = [[10 for i in range(s_xy)] for i in range(s_xy)]
+                    button_press()
 
 
 def draw_point(x, y, type):
