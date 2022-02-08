@@ -2,11 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 import time
 import random
-
-import self as self
-
 from check_winner import *
-
 
 # Tkinter parameters
 tk = Tk()
