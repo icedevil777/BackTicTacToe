@@ -10,7 +10,7 @@ tk.title("BackTicTacToe")
 tk.resizable(0, 0)
 tk.wm_attributes("-topmost", 1)
 # Game and field parameters
-size_canvas = 661
+size_canvas = 761
 s_xy = 10  # Number of cells
 save = 0
 step = size_canvas // s_xy
