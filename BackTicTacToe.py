@@ -95,10 +95,7 @@ def step_player(event):
         draw_point(event.x // step, event.y // step, type)
         if check_winner(type, s_xy, points):
             print("Computer is winner!")
-            print("Computer is winner!")
             messagebox.showinfo("Game over", "Computer is winner!")
-
-            # print(points)
             points = [[10 for i in range(s_xy)] for i in range(s_xy)]
             button_press()
         turn = 0
@@ -119,14 +116,11 @@ def step_ai():
                            AI_table[rand][1] // step, type)
                 turn = 1
                 type = (int(not type))
-                # print(f"turn {turn}")
-                # print(f"type {type}")
             if check_winner(type, s_xy, points) == 1:
                 points[AI_table[rand][0] \
                        // step][AI_table[rand][1] // step] = -2
                 if save < 3:
                     save = save + 1
-                    # print(f"save {save}")
                 else:
                     print("Player is winner!")
 
